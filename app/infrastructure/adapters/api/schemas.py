@@ -1,0 +1,74 @@
+from pydantic import BaseModel
+from typing import Optional, List
+from datetime import datetime
+import uuid
+
+class PetBase(BaseModel):
+    name: str
+    species: str
+    breed: str
+    age: int
+    owner_id: uuid.UUID
+
+class PetCreate(PetBase):
+    pass
+
+class PetResponse(PetBase):
+    id: uuid.UUID
+    medical_history: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class OwnerBase(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
+    phone: str
+
+class OwnerCreate(OwnerBase):
+    pass
+
+class OwnerResponse(OwnerBase):
+    id: uuid.UUID
+
+    class Config:
+        from_attributes = True
+
+class AppointmentBase(BaseModel):
+    pet_id: uuid.UUID
+    owner_id: uuid.UUID
+    date: datetime
+    reason: str
+    cost: float
+
+class AppointmentCreate(AppointmentBase):
+    pass
+
+class AppointmentResponse(AppointmentBase):
+    id: uuid.UUID
+    status: str
+
+    class Config:
+        from_attributes = True
+
+class MedicalRecordBase(BaseModel):
+    description: str
+    diagnosis: str
+    treatment: str
+
+class MedicalRecordCreate(MedicalRecordBase):
+    pet_id: uuid.UUID
+    record_type: Optional[str] = "Consultation"
+    next_date: Optional[datetime] = None
+
+class MedicalRecordResponse(MedicalRecordBase):
+    id: uuid.UUID
+    pet_id: uuid.UUID
+    recording_date: datetime
+    record_type: str
+    next_date: Optional[datetime] = None
+    vet_id: Optional[uuid.UUID]
+
+    class Config:
+        from_attributes = True
