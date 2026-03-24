@@ -20,7 +20,7 @@ def login(request: LoginRequest, user_service: UserService = Depends(get_user_se
     if not result:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Usuario o contraseña incorrectos",
             headers={"WWW-Authenticate": "Bearer"},
         )
     return result
