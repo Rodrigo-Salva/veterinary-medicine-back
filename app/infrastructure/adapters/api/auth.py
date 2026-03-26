@@ -1,20 +1,16 @@
 from jose import jwt, JWTError
 from passlib.context import CryptContext
-import os
 from datetime import datetime, timedelta
 from typing import Optional
-from dotenv import load_dotenv
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.user_repository_impl import SqlAlchemyUserRepository
+from app.infrastructure.config.settings import settings
 from app.domain.entities.user import User
 
-load_dotenv()
-
-# Configuración de Seguridad
-SECRET_KEY = os.getenv("SECRET_KEY", "7d4468f7f21295b9278972989b532a24d081014e3975071191024bd35a820790")
+SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 1 día
 
