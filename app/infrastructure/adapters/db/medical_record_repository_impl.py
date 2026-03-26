@@ -17,7 +17,9 @@ class SqlAlchemyMedicalRecordRepository(MedicalRecordRepository):
             description=record.description,
             diagnosis=record.diagnosis,
             treatment=record.treatment,
-            vet_id=record.vet_id
+            record_type=record.record_type,
+            next_date=record.next_date,
+            vet_id=record.vet_id,
         )
         self.db.add(db_record)
         self.db.commit()
@@ -40,5 +42,7 @@ class SqlAlchemyMedicalRecordRepository(MedicalRecordRepository):
             description=db_record.description,
             diagnosis=db_record.diagnosis,
             treatment=db_record.treatment,
-            vet_id=db_record.vet_id
+            record_type=db_record.record_type or "Consultation",
+            next_date=db_record.next_date,
+            vet_id=db_record.vet_id,
         )

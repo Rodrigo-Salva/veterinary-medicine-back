@@ -44,6 +44,23 @@ class SqlAlchemyOwnerRepository(OwnerRepository):
             ) for om in owner_models
         ]
 
+    def update(self, owner_id: uuid.UUID, data: dict) -> Optional[Owner]:
+        owner_model = self.db.query(OwnerModel).filter(OwnerModel.id == owner_id).first()
+        if not owner_model:
+            return None
+        for key, value in data.items():
+            if value is not None:
+                setattr(owner_model, key, value)
+        self.db.commit()
+        self.db.refresh(owner_model)
+        return Owner(
+            id=owner_model.id,
+            first_name=owner_model.first_name,
+            last_name=owner_model.last_name,
+            email=owner_model.email,
+            phone=owner_model.phone
+        )
+
     def find_by_email(self, email: str) -> Optional[Owner]:
         owner_model = self.db.query(OwnerModel).filter(OwnerModel.email == email).first()
         if owner_model:
