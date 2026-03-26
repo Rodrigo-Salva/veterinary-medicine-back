@@ -13,9 +13,16 @@ class PetBase(BaseModel):
 class PetCreate(PetBase):
     pass
 
+class PetUpdate(BaseModel):
+    name: Optional[str] = None
+    species: Optional[str] = None
+    breed: Optional[str] = None
+    age: Optional[int] = None
+
 class PetResponse(PetBase):
     id: uuid.UUID
     medical_history: Optional[str] = None
+    is_active: bool = True
 
     class Config:
         from_attributes = True
@@ -28,6 +35,12 @@ class OwnerBase(BaseModel):
 
 class OwnerCreate(OwnerBase):
     pass
+
+class OwnerUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
 
 class OwnerResponse(OwnerBase):
     id: uuid.UUID

@@ -5,18 +5,10 @@ from typing import List
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.models_medical import MedicalRecordModel
 from app.infrastructure.adapters.db.models import PetModel
-from app.infrastructure.adapters.api.schemas import MedicalRecordResponse
-from pydantic import BaseModel
-import uuid
+from app.infrastructure.adapters.api.schemas_vaccines import VaccineReminder
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/vaccines", tags=["vaccines"])
-
-class VaccineReminder(BaseModel):
-    pet_id: uuid.UUID
-    pet_name: str
-    owner_name: str
-    record_type: str
-    next_date: datetime
+router = APIRouter(prefix="/vaccines", tags=["vaccines"], dependencies=[Depends(get_current_user)])
 
 @router.get("/upcoming", response_model=List[VaccineReminder])
 def get_upcoming_vaccines(days: int = 30, db: Session = Depends(get_db)):

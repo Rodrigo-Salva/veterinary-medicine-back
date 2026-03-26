@@ -8,8 +8,9 @@ from app.application.services.hospitalization_service import HospitalizationUseC
 from app.infrastructure.adapters.api.schemas_hospital import (
     CageResponse, HospitalizationCreate, HospitalizationResponse, VitalSignCreate, VitalSignResponse
 )
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/hospital", tags=["hospital"])
+router = APIRouter(prefix="/hospital", tags=["hospital"], dependencies=[Depends(get_current_user)])
 
 @router.get("/cages", response_model=List[CageResponse])
 def list_cages(db: Session = Depends(get_db)):

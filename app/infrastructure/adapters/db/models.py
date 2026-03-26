@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float, Boolean
 from app.infrastructure.adapters.db.models_medical import MedicalRecordModel
 from app.infrastructure.adapters.db.models_hospital import CageModel, HospitalizationModel, VitalSignModel
 from app.infrastructure.adapters.db.models_inventory import ProductModel
@@ -26,6 +26,7 @@ class PetModel(Base):
     age = Column(Integer, nullable=False)
     owner_id = Column(UUID(as_uuid=True), ForeignKey("owners.id"), nullable=False)
     medical_history = Column(String, nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True, server_default='true')
 
 class AppointmentModel(Base):
     __tablename__ = "appointments"

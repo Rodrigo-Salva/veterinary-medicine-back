@@ -6,8 +6,9 @@ from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.product_repository_impl import SqlAlchemyProductRepository
 from app.application.services.inventory_service import InventoryUseCase
 from app.infrastructure.adapters.api.schemas_inventory import ProductCreate, ProductResponse, StockUpdate
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/inventory", tags=["inventory"])
+router = APIRouter(prefix="/inventory", tags=["inventory"], dependencies=[Depends(get_current_user)])
 
 def get_inventory_service(db: Session = Depends(get_db)):
     repository = SqlAlchemyProductRepository(db)

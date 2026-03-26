@@ -6,8 +6,10 @@ from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.medical_record_repository_impl import SqlAlchemyMedicalRecordRepository
 from app.application.services.add_medical_record import AddMedicalRecordUseCase
 from app.infrastructure.adapters.api.schemas import MedicalRecordCreate, MedicalRecordResponse
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/medical-records", tags=["medical-records"])
+router = APIRouter(prefix="/medical-records", tags=["medical-records"], dependencies=[Depends(get_current_user)])
+
 
 @router.post("/", response_model=MedicalRecordResponse)
 def create_medical_record(record: MedicalRecordCreate, db: Session = Depends(get_db)):
@@ -17,7 +19,9 @@ def create_medical_record(record: MedicalRecordCreate, db: Session = Depends(get
         pet_id=record.pet_id,
         description=record.description,
         diagnosis=record.diagnosis,
-        treatment=record.treatment
+        treatment=record.treatment,
+        record_type=record.record_type or "Consultation",
+        next_date=record.next_date,
     )
 
 @router.get("/pet/{pet_id}", response_model=List[MedicalRecordResponse])

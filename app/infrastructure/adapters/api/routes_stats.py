@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.models import PetModel, OwnerModel, AppointmentModel
-from sqlalchemy import func, extract
+from app.infrastructure.adapters.api.auth import get_current_user
+from sqlalchemy import func
 from datetime import datetime, timedelta
 
-router = APIRouter(prefix="/stats", tags=["stats"])
+router = APIRouter(prefix="/stats", tags=["stats"], dependencies=[Depends(get_current_user)])
 
 @router.get("/")
 def get_stats(db: Session = Depends(get_db)):

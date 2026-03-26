@@ -11,3 +11,4 @@ class Pet:
     age: int
     owner_id: uuid.UUID
     medical_history: Optional[str] = None
+    is_active: bool = True

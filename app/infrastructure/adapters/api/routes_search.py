@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.models import PetModel, OwnerModel, AppointmentModel
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/search", tags=["search"])
+router = APIRouter(prefix="/search", tags=["search"], dependencies=[Depends(get_current_user)])
 
 @router.get("/")
 def global_search(q: str = Query(..., min_length=1), db: Session = Depends(get_db)):
