@@ -4,26 +4,15 @@ from typing import List, Optional
 import uuid
 import os
 import shutil
-from datetime import datetime
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.models_attachments import AttachmentModel
-from pydantic import BaseModel
+from app.infrastructure.adapters.api.schemas_attachments import AttachmentResponse
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/attachments", tags=["attachments"])
+router = APIRouter(prefix="/attachments", tags=["attachments"], dependencies=[Depends(get_current_user)])
 
 UPLOAD_DIR = "uploads/medical"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-class AttachmentResponse(BaseModel):
-    id: uuid.UUID
-    pet_id: uuid.UUID
-    file_path: str
-    file_type: str
-    description: Optional[str]
-    upload_date: datetime
-
-    class Config:
-        from_attributes = True
 
 @router.post("/upload", response_model=AttachmentResponse)
 async def upload_attachment(

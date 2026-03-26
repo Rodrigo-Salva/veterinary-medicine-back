@@ -2,53 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime
-from pydantic import BaseModel
 import uuid
 from app.infrastructure.adapters.db.database import get_db
 from app.infrastructure.adapters.db.models_billing import InvoiceModel, InvoiceItemModel
-from app.infrastructure.adapters.db.models import PetModel, OwnerModel
+from app.infrastructure.adapters.api.schemas_billing import InvoiceCreate, InvoiceResponse, InvoiceItemResponse
+from app.infrastructure.adapters.api.auth import get_current_user
 
-router = APIRouter(prefix="/billing", tags=["billing"])
-
-# ─── Schemas ────────────────────────────────────────────────────────────────
-
-class InvoiceItemCreate(BaseModel):
-    description: str
-    quantity: float = 1.0
-    unit_price: float
-
-class InvoiceCreate(BaseModel):
-    pet_id: uuid.UUID
-    owner_id: uuid.UUID
-    items: List[InvoiceItemCreate]
-    tax_rate: float = 0.0
-    notes: Optional[str] = None
-
-class InvoiceItemResponse(BaseModel):
-    id: uuid.UUID
-    invoice_id: uuid.UUID
-    description: str
-    quantity: float
-    unit_price: float
-    total: float
-
-    class Config:
-        from_attributes = True
-
-class InvoiceResponse(BaseModel):
-    id: uuid.UUID
-    pet_id: uuid.UUID
-    owner_id: uuid.UUID
-    date: datetime
-    subtotal: float
-    tax_rate: float
-    total: float
-    status: str
-    notes: Optional[str]
-    items: List[InvoiceItemResponse] = []
-
-    class Config:
-        from_attributes = True
+router = APIRouter(prefix="/billing", tags=["billing"], dependencies=[Depends(get_current_user)])
 
 # ─── Endpoints ──────────────────────────────────────────────────────────────
 
