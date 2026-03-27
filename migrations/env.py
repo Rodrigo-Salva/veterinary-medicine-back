@@ -11,6 +11,8 @@ from app.infrastructure.adapters.db.database import Base
 from app.infrastructure.adapters.db.models import OwnerModel, PetModel, AppointmentModel
 from app.infrastructure.adapters.db.models_medical import MedicalRecordModel
 from app.infrastructure.adapters.db.models_hospital import CageModel, HospitalizationModel, VitalSignModel
+from app.infrastructure.adapters.db.models_user import UserModel
+from app.infrastructure.adapters.db.models_role import RoleModel, PermissionModel, RolePermissionModel
 from app.infrastructure.config.settings import settings
 
 target_metadata = Base.metadata
