@@ -23,8 +23,6 @@ class Pet:
     owner_id: uuid.UUID
     medical_history: Optional[str] = None
     is_active: bool = True
-<<<<<<< HEAD
-=======
     photo_url: Optional[str] = None
     sex: Optional[str] = None  # "Macho", "Hembra"
     color: Optional[str] = None
@@ -35,4 +33,3 @@ class Pet:
     birth_date: Optional[date] = None
     notes: Optional[str] = None
     weight_history: List[WeightRecord] = field(default_factory=list)
->>>>>>> b509e06 (refactor: enhance user and pet models with extended attributes)

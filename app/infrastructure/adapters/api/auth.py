@@ -1,10 +1,6 @@
 from jose import jwt, JWTError
-<<<<<<< HEAD
-from passlib.context import CryptContext
-=======
 import bcrypt
 import os
->>>>>>> b509e06 (refactor: enhance user and pet models with extended attributes)
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
