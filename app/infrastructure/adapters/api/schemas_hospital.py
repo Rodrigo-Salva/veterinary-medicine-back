@@ -6,10 +6,17 @@ import uuid
 class CageBase(BaseModel):
     name: str
 
+class CageCreate(CageBase):
+    pass
+
+class CageUpdate(CageBase):
+    pass
+
 class CageResponse(CageBase):
     id: uuid.UUID
     is_occupied: bool
     current_pet_id: Optional[uuid.UUID]
+    current_hospitalization_id: Optional[uuid.UUID] = None
     
     model_config = ConfigDict(from_attributes=True)
 

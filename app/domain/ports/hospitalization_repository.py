@@ -17,6 +17,10 @@ class HospitalizationRepository(ABC):
         pass
 
     @abstractmethod
+    def delete_cage(self, cage_id: uuid.UUID) -> bool:
+        pass
+
+    @abstractmethod
     def save_hospitalization(self, hospitalization: Hospitalization) -> Hospitalization:
         pass
 

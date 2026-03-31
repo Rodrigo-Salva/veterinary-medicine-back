@@ -19,6 +19,7 @@ async def upload_attachment(
     pet_id: uuid.UUID = Form(...),
     medical_record_id: Optional[uuid.UUID] = Form(None),
     description: Optional[str] = Form(None),
+    category: str = Form("General"),
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
@@ -44,7 +45,8 @@ async def upload_attachment(
         medical_record_id=medical_record_id,
         file_path=file_path,
         file_type=file_type,
-        description=description
+        description=description,
+        category=category
     )
     db.add(attachment)
     db.commit()

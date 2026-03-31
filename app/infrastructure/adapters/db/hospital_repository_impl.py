@@ -21,11 +21,44 @@ class SqlAlchemyHospitalizationRepository(HospitalizationRepository):
 
     def get_cages(self) -> List[Cage]:
         db_cages = self.db.query(CageModel).all()
-        return [Cage(id=c.id, name=c.name, is_occupied=c.is_occupied, current_pet_id=c.current_pet_id) for c in db_cages]
+        results = []
+        for c in db_cages:
+            h_id = None
+            if c.is_occupied and c.current_pet_id:
+                active_h = self.db.query(HospitalizationModel).filter(
+                    HospitalizationModel.cage_id == c.id,
+                    HospitalizationModel.status == "Active"
+                ).first()
+                if active_h: h_id = active_h.id
+            results.append(Cage(
+                id=c.id, name=c.name, is_occupied=c.is_occupied, 
+                current_pet_id=c.current_pet_id, current_hospitalization_id=h_id
+            ))
+        return results
 
     def get_cage_by_id(self, cage_id: uuid.UUID) -> Optional[Cage]:
         c = self.db.query(CageModel).filter(CageModel.id == cage_id).first()
-        return Cage(id=c.id, name=c.name, is_occupied=c.is_occupied, current_pet_id=c.current_pet_id) if c else None
+        if not c: return None
+        h_id = None
+        if c.is_occupied and c.current_pet_id:
+            active_h = self.db.query(HospitalizationModel).filter(
+                HospitalizationModel.cage_id == c.id,
+                HospitalizationModel.status == "Active"
+            ).first()
+            if active_h: h_id = active_h.id
+        return Cage(
+            id=c.id, name=c.name, is_occupied=c.is_occupied, 
+            current_pet_id=c.current_pet_id, current_hospitalization_id=h_id
+        )
+
+    def delete_cage(self, cage_id: uuid.UUID) -> bool:
+        db_cage = self.db.query(CageModel).filter(CageModel.id == cage_id).first()
+        if not db_cage: return False
+        if db_cage.is_occupied:
+            raise Exception("Cannot delete an occupied cage")
+        self.db.delete(db_cage)
+        self.db.commit()
+        return True
 
     def save_hospitalization(self, h: Hospitalization) -> Hospitalization:
         db_h = self.db.query(HospitalizationModel).filter(HospitalizationModel.id == h.id).first()

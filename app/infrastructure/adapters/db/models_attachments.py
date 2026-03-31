@@ -13,4 +13,5 @@ class AttachmentModel(Base):
     file_path = Column(String, nullable=False)
     file_type = Column(String, nullable=False) # "Image", "PDF", "Other"
     description = Column(String, nullable=True)
+    category = Column(String, nullable=False, default="General") # "Laboratory", "X-Ray", "Ultrasound", "General"
     upload_date = Column(DateTime, default=datetime.utcnow)

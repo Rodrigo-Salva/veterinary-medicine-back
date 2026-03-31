@@ -9,6 +9,7 @@ class Cage:
     name: str  # e.g., "Cage A1", "Large Dog B"
     is_occupied: bool = False
     current_pet_id: Optional[uuid.UUID] = None
+    current_hospitalization_id: Optional[uuid.UUID] = None
 
 @dataclass
 class VitalSignRecord:
