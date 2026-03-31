@@ -11,18 +11,58 @@ class PetBase(BaseModel):
     owner_id: uuid.UUID
 
 class PetCreate(PetBase):
-    pass
+    sex: Optional[str] = None
+    color: Optional[str] = None
+    weight: Optional[float] = None
+    allergies: Optional[str] = None
+    is_neutered: bool = False
+    microchip: Optional[str] = None
+    birth_date: Optional[datetime] = None
+    notes: Optional[str] = None
 
 class PetUpdate(BaseModel):
     name: Optional[str] = None
     species: Optional[str] = None
     breed: Optional[str] = None
     age: Optional[int] = None
+    sex: Optional[str] = None
+    color: Optional[str] = None
+    weight: Optional[float] = None
+    allergies: Optional[str] = None
+    is_neutered: Optional[bool] = None
+    microchip: Optional[str] = None
+    birth_date: Optional[datetime] = None
+    notes: Optional[str] = None
+
+class WeightRecordCreate(BaseModel):
+    weight: float
+    recorded_date: datetime
+    notes: Optional[str] = None
+
+class WeightRecordResponse(BaseModel):
+    id: uuid.UUID
+    pet_id: uuid.UUID
+    weight: float
+    recorded_date: datetime
+    notes: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 class PetResponse(PetBase):
     id: uuid.UUID
     medical_history: Optional[str] = None
     is_active: bool = True
+    photo_url: Optional[str] = None
+    sex: Optional[str] = None
+    color: Optional[str] = None
+    weight: Optional[float] = None
+    allergies: Optional[str] = None
+    is_neutered: bool = False
+    microchip: Optional[str] = None
+    birth_date: Optional[datetime] = None
+    notes: Optional[str] = None
+    weight_history: List[WeightRecordResponse] = []
 
     class Config:
         from_attributes = True
