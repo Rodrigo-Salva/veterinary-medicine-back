@@ -25,4 +25,14 @@ class PrescriptionModel(Base):
     medical_record_id = Column(UUID(as_uuid=True), ForeignKey("medical_records.id"), nullable=True)
     date = Column(DateTime, default=datetime.utcnow)
     medications = Column(Text, nullable=False) # Simple text for now, or JSON string
-    instructions = Column(Text, nullable=False)
+class LaboratoryResultModel(Base):
+    __tablename__ = "laboratory_results"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    pet_id = Column(UUID(as_uuid=True), ForeignKey("pets.id"), nullable=False)
+    test_name = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    result_date = Column(DateTime, default=datetime.utcnow)
+    notes = Column(Text, nullable=True)
+    parameters = Column(Text, nullable=True) # JSON string: {"Glucose": "110 mg/dL", ...}
+

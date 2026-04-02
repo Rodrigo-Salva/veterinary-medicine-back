@@ -16,10 +16,12 @@ from app.infrastructure.adapters.api.routes_role import router as role_router
 from app.infrastructure.adapters.api.notifications import router as notifications_router
 from app.infrastructure.adapters.api.routes_public import router as public_router
 from app.infrastructure.adapters.api.routes_telemedicine import router as telemedicine_router
+from app.infrastructure.adapters.api.routes_laboratory import router as laboratory_router
 
 router = APIRouter()
 router.include_router(public_router)
 router.include_router(telemedicine_router)
+router.include_router(laboratory_router)
 router.include_router(pet_router)
 router.include_router(owner_router)
 router.include_router(appointment_router)
